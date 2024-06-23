@@ -1,0 +1,24 @@
+name: Update Private Repository
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "we826@liq.33mail.com"
+          git config --global user.name "Auto Updater"
+
+      - name: Fetch upstream changes
+        run: |
+          git fetch upstream
+          git checkout master  # Make sure you are on the master branch or main branch
+          git merge upstream/master  # Merge upstream changes into your private repository's master branch
+          git push origin master  # Push the updated master branch back to your private repository
